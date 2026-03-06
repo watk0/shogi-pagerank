@@ -1,3 +1,4 @@
+import argparse
 import csv
 import networkx as nx
 from pathlib import Path
@@ -60,6 +61,21 @@ def build_graph_from_csv(csv_path):
 
 
 def main():
+	parser = argparse.ArgumentParser(description='将棋棋士のPageRankを計算する')
+	parser.add_argument(
+		'--alpha',
+		type=float,
+		default=0.85,
+		help='PageRankのダンピングファクター (0 < alpha < 1, デフォルト: 0.85)',
+	)
+	args = parser.parse_args()
+
+	if not (0 < args.alpha < 1):
+		parser.error(f'--alpha は 0 より大きく 1 より小さい値を指定してください (指定値: {args.alpha})')
+
+	alpha = args.alpha
+	print(f"ダンピングファクター α = {alpha}")
+
 	# 出力ディレクトリが存在しない場合は作成
 	OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 	
@@ -88,7 +104,7 @@ def main():
 		
 		# PageRankを計算（エッジの重みを考慮）
 		print("PageRankを計算中...")
-		pagerank = nx.pagerank(G, weight='weight')
+		pagerank = nx.pagerank(G, alpha=alpha, weight='weight')
 		
 		# スコアでソートして上位を表示
 		sorted_players = sorted(pagerank.items(), key=lambda x: x[1], reverse=True)
@@ -99,7 +115,7 @@ def main():
 			print(f"{i:2d}. {name:20s} ({player:15s}) {score:.6f}")
 		
 		# CSVに出力
-		output_path = OUTPUT_DIR / f"pagerank_results_{fiscal_year}.csv"
+		output_path = OUTPUT_DIR / f"pagerank_results_{fiscal_year}_a{alpha:.2f}.csv"
 		with open(output_path, 'w', encoding='utf-8', newline='') as f:
 			writer = csv.writer(f)
 			writer.writerow(['順位', '棋士名', '棋士ID', 'PageRankスコア'])
