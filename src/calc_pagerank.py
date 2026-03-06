@@ -60,6 +60,9 @@ def build_graph_from_csv(csv_path):
 
 
 def main():
+	# 出力ディレクトリが存在しない場合は作成
+	OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+	
 	# results/フォルダの全CSV（年度ごと）を取得
 	csv_files = sorted(RESULTS_DIR.glob('*年度.csv'))
 	

@@ -115,6 +115,9 @@ def get_fiscal_year(yyyymm: str) -> int:
 
 def main():
 	"""results/フォルダの全HTMLを処理して、年度ごとにCSVを出力する"""
+	# 出力ディレクトリが存在しない場合は作成
+	OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+	
 	# resultsフォルダ内の全HTMLファイルを取得（ソート順）
 	html_files = sorted(RESULTS_DIR.glob('*.html'))
 	
