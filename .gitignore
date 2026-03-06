@@ -219,6 +219,7 @@ __marimo__/
 # データファイル（生成済み）
 data/raw/
 data/processed/
+data/outputs/
 
 # 個人設定ファイル
 .gitmessage
