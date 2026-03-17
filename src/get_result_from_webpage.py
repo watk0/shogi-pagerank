@@ -40,7 +40,7 @@ def main() -> None:
 	for yyyymm in iter_months(200604, 202603):
 		download_html(yyyymm)
 		print(f"Downloaded {yyyymm}.html")
-		time.sleep(0.3)
+		time.sleep(1)
 
 
 if __name__ == "__main__":
